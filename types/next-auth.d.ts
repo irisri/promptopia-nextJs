@@ -1,6 +1,7 @@
 // my-project/types/next-auth.d.ts
 
 import NextAuth from "next-auth";
+// import type { Profile } from 'next-auth';
 
 declare module "next-auth" {
   /**
@@ -14,6 +15,10 @@ declare module "next-auth" {
       image: string;
       username: string;
     };
+  }
+
+  interface Profile {
+    picture?: string;
   }
 }
 

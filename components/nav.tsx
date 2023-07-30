@@ -43,22 +43,33 @@ export const Nav = () => {
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href={"/create-prompt"} className="rounded-full bg-amaranth">
+            <Link
+              href={"/create-prompt"}
+              className="rounded-full bg-amaranth self-center"
+            >
               <Text
-                text="Create Post"
+                text="Create Prompt"
                 preset={TextPreset.P}
                 tailWindStyle="px-3 py-1"
               />
             </Link>
             <button
-              className="rounded-full"
+              className="rounded-full self-center"
               type="button"
-              onClick={() => {
-                console.log("clock");
-              }}
+              onClick={() => signOut()}
             >
               Sign Out
             </button>
+
+            <Link href="/profile">
+              <Image
+                src={session?.user.image}
+                width={37}
+                height={37}
+                className="rounded-full"
+                alt="profile"
+              />
+            </Link>
           </div>
         ) : (
           <>
@@ -67,7 +78,7 @@ export const Nav = () => {
                 const provider = item as Provider;
                 return (
                   <button
-                    className="rounded-full bg-amaranth px-3 py-1"
+                    className="rounded-full bg-amaranth px-3 py-1 self-center"
                     type="button"
                     key={provider ? provider.id : index}
                     onClick={() => {
@@ -107,7 +118,7 @@ export const Nav = () => {
                 </Link>
                 <Link
                   href="/create-prompt"
-                  className="dropdown_link"
+                  className="dropdown_link self-center"
                   onClick={() => setToggleDropdown(false)}
                 >
                   Create Prompt

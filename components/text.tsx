@@ -1,7 +1,10 @@
 export enum TextPreset {
   H1 = "h1",
   H2 = "h2",
+  H3 = "h3",
+  H4 = "h4",
   P = "p",
+  Small = "small",
 }
 
 interface TextProps {
@@ -19,12 +22,22 @@ export const Text = ({ preset, text, tailWindStyle }: TextProps) => {
         );
       case TextPreset.H2:
         return (
-          <h1 className={`text-4xl font-bold ${tailWindStyle}`}>{text}</h1>
+          <h2 className={`text-4xl font-bold ${tailWindStyle}`}>{text}</h2>
         );
-      default:
+      case TextPreset.H3:
+        return (
+          <h3 className={`text-3xl font-semibold ${tailWindStyle}`}>{text}</h3>
+        );
+      case TextPreset.H4:
+        return (
+          <h3 className={`text-2xl font-medium ${tailWindStyle}`}>{text}</h3>
+        );
+      case TextPreset.P:
         return (
           <p className={`text-base font-normal ${tailWindStyle}`}>{text}</p>
         );
+      default:
+        return <p className={`text-sm font-light ${tailWindStyle}`}>{text}</p>;
     }
   };
 
