@@ -15,7 +15,7 @@ export interface DatabasePromptProps extends PromptProps {
 
 interface PromptCartListProps {
   data: DatabasePromptProps[];
-  handleTagClick: () => void;
+  handleTagClick: (value: string) => void;
 }
 
 export const PromptCartList = ({

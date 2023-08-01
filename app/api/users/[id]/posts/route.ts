@@ -21,8 +21,11 @@ export async function GET(
     return NextResponse.json(prompts);
   } catch (err) {
     console.error(err);
-    return new NextResponse(JSON.stringify("failed GET /api/prompt"), {
-      status: 500,
-    });
+    return new NextResponse(
+      JSON.stringify("failed GET /api/users/[id]/posts"),
+      {
+        status: 500,
+      }
+    );
   }
 }

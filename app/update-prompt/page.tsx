@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Form } from "@components/form";
@@ -10,8 +9,6 @@ export interface PromptProps {
   prompt: string;
   tag: string;
 }
-
-// update-prompt
 
 const EditPrompt = () => {
   const router = useRouter();

@@ -42,9 +42,11 @@ export const PromptCard = ({
   };
 
   useEffect(() => {
-    if (timeOutId && timeOutId.current) {
-      return clearTimeout(timeOutId.current);
-    }
+    return () => {
+      if (timeOutId && timeOutId.current) {
+        clearTimeout(timeOutId.current);
+      }
+    };
   }, []);
 
   return (

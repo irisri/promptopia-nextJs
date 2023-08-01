@@ -14,6 +14,8 @@ export async function POST(request: Request) {
     return new NextResponse(JSON.stringify(newPrompt), { status: 201 });
   } catch (err) {
     console.error(err);
-    return new NextResponse(JSON.stringify(""), { status: 500 });
+    return new Response(JSON.stringify("failed POST /api/prompt/new"), {
+      status: 500,
+    });
   }
 }

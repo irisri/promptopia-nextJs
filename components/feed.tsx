@@ -1,29 +1,39 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useRef } from "react";
 
-import { Text, TextPreset } from "./text";
 import { PromptCartList, DatabasePromptProps } from "./promptCartList";
 
 export const Feed = () => {
   const [allPosts, setAllPosts] = useState<DatabasePromptProps[]>([]);
 
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
+  const timeOutId = useRef<NodeJS.Timeout | null>(null);
   const [searchedResults, setSearchedResults] = useState<DatabasePromptProps[]>(
     []
   );
 
+  const filterPrompts = (searchtext: string) => {
+    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+    return allPosts.filter(
+      (item) =>
+        regex.test(item.creator.username) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+    );
+  };
+
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // clearTimeout(searchTimeout);
-    // setSearchText(e.target.value);
-    // // debounce method
-    // setSearchTimeout(
-    //   setTimeout(() => {
-    //     const searchResult = filterPrompts(e.target.value);
-    //     setSearchedResults(searchResult);
-    //   }, 500)
-    // );
+    if (timeOutId && timeOutId.current) {
+      clearTimeout(timeOutId.current);
+    }
+    setSearchText(e.target.value);
+
+    // debounce method
+    timeOutId.current = setTimeout(() => {
+      const searchResult = filterPrompts(e.target.value);
+      setSearchedResults(searchResult);
+    }, 500);
   };
 
   useEffect(() => {
@@ -35,6 +45,21 @@ export const Feed = () => {
 
     fetchPost();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timeOutId && timeOutId.current) {
+        clearTimeout(timeOutId.current);
+      }
+    };
+  }, []);
+
+  const handleTagClick = (tagName: string) => {
+    setSearchText(tagName);
+
+    const searchResult = filterPrompts(tagName);
+    setSearchedResults(searchResult);
+  };
 
   return (
     <div>
@@ -50,7 +75,10 @@ export const Feed = () => {
       </form>
 
       {allPosts.length > 0 ? (
-        <PromptCartList data={allPosts} handleTagClick={() => {}} />
+        <PromptCartList
+          data={searchText ? searchedResults : allPosts}
+          handleTagClick={handleTagClick}
+        />
       ) : null}
     </div>
   );
