@@ -26,7 +26,7 @@ const EditPrompt = () => {
 
   useEffect(() => {
     const getPromptDetails = async () => {
-      const response = await fetch(`api/prompt/${promptId}`);
+      const response = await fetch(`/api/prompt/${promptId}`);
       const data = await response.json();
       setPost({ prompt: data.prompt, tag: data.tag });
     };
@@ -35,16 +35,21 @@ const EditPrompt = () => {
     getPromptDetails();
   }, [promptId]);
 
-  const createPrompt = async (e: FormEvent<HTMLFormElement>) => {
+  const updatePrompt = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!promptId) {
+      console.error("Missing prompId");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      const response = await fetch("api/prompt/new", {
-        method: "POST",
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: "PATCH",
         body: JSON.stringify({
           prompt: post.prompt,
-          userId: "",
           tag: post.tag,
         }),
       });
@@ -66,7 +71,7 @@ const EditPrompt = () => {
         type={"Edit"}
         post={post}
         submitting={submitting}
-        handleSubmit={createPrompt}
+        handleSubmit={updatePrompt}
       />
     </div>
   );

@@ -16,7 +16,22 @@ const ProfilePage = () => {
   const handleEdit = (post: DatabasePromptProps) => {
     router.push(`/update-prompt?id=${post._id}`);
   };
-  const handleDelete = async () => {};
+
+  const handleDelete = async (post: DatabasePromptProps) => {
+    try {
+      await fetch(`/api/prompt/${post._id.toString()}`, {
+        method: "DELETE",
+      });
+
+      const filteredPosts = posts.filter(
+        (postItem) => postItem._id !== post._id
+      );
+
+      setPosts(filteredPosts);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
